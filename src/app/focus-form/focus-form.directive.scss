@@ -1,0 +1,80 @@
+.focus-form {
+  .floating-nav {
+    background-color: white;
+    box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.12);
+    position:fixed;
+    font-size: 18px;
+    border-radius: 2px;
+    right:20px;
+    top: 150px;
+    width: 200px;
+    z-index:900;
+
+    .header {
+      padding: 10px;
+      background-color: #0480AC;
+      color: #ffffff;
+      font-weight:600;
+    }
+
+    ul {
+      padding-top: 10px;
+      padding-left: 30px;
+    }
+
+    a:hover, a:focus {
+      text-decoration: none;
+    }
+  }
+
+  .focus-form-section {
+    color: #9d9d9d;
+    line-height: .75;
+    padding:10px 210px 10px 10px;
+    font-size: 1em;
+    background: rgba(0, 0, 0, .15);
+
+    &:focus {
+      outline: none;
+    }
+
+    input {
+      padding:3px;
+      height:50%;
+    }
+
+    .focus-form-section-header {
+      font-size: 2em;
+      border-bottom: 1px solid #9d9d9d;
+      padding-top: 10px;
+      padding-bottom: 3px;
+      margin-bottom: 15px;
+    }
+  }
+
+  .gradient-up {
+    background: linear-gradient(to bottom, rgba(0, 0, 0, .15), rgba(0, 0, 0, .02));
+  }
+  .gradient-down {
+    background: linear-gradient(to bottom, rgba(0, 0, 0, .02), rgba(0, 0, 0, .15));
+  }
+
+  .has-focus {
+    color: inherit;
+    font-size: 1.5em;
+    line-height: 1.25;
+    background: rgba(0, 0, 0, .02);
+    padding-top:25px;
+    padding-bottom:25px;
+    transition: font 0.3s ease;
+
+    input {
+      padding: 6px 16px;
+      height: 100%;
+    }
+
+    .focus-form-section-header{
+      border-bottom: 2px solid #9d9d9d;
+    }
+  }
+}
