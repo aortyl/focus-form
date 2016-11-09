@@ -1,7 +1,6 @@
 class TechsController {
   /** @ngInject */
-  constructor($http, $log) {
-    $log.debug('Tech');
+  constructor($http) {
     $http
       .get('app/techs/techs.json')
       .then(response => {
