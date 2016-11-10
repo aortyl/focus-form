@@ -75,7 +75,7 @@ export const focusFormSection = function () {
 
             scope.myIndex = scope.parentCtrl.addItem(scope.name, scope.myCtrl);
         },
-        controller($scope, $element, $timeout) {
+        controller($scope, $element, $timeout, $location, $anchorScroll) {
             let timeout = null;
             this.setFocus = function () {
                 $scope.focus = true;
@@ -83,7 +83,8 @@ export const focusFormSection = function () {
                     $timeout.cancel(timeout);
                 }
                 timeout = $timeout(() => {
-                    angular.element("body").animate({scrollTop: $element[0].offsetTop - 100}, "slow");
+                    $location.hash($scope.name);
+                    $anchorScroll();
                 }, 0);
                 $scope.gradientUp = false;
                 $scope.gradientDown = false;
