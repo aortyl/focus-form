@@ -1,7 +1,5 @@
 import angular from 'angular';
 
-import {techsModule} from './app/techs/index';
-
 import {main} from './app/main';
 import {header} from './app/header';
 import {title} from './app/title';
@@ -13,10 +11,10 @@ import './index.scss';
 import './app/focus-form.directive.scss';
 
 angular
-  .module('app', [techsModule])
+  .module('app', [])
   .component('app', main)
-  .component('fountainHeader', header)
-  .component('fountainTitle', title)
-  .component('fountainFooter', footer)
+  .component('demoHeader', header)
+  .component('demoTitle', title)
+  .component('demoFooter', footer)
     .directive('focusForm', focusForm)
     .directive('focusFormSection', focusFormSection);
