@@ -10,6 +10,8 @@ import {footer} from './app/footer';
 import {focusForm, focusFormSection} from './app/focus-form.directive';
 
 import './index.scss';
+import './app/focus-form.directive.scss';
+
 angular
   .module('app', [techsModule])
   .component('app', main)

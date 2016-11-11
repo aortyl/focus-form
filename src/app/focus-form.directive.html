@@ -5,7 +5,9 @@
         </div>
         <ul>
             <li ng-repeat="child in children">
-                <a href="#" ng-click="focusOnChild($index, child.name, child.controller)"><span ng-bind="child.name"></span></a>
+                <a href="#" ng-click="focusOnChild($index, child.name, child.controller)">
+                    <span ng-bind="child.name"></span>
+                </a>
             </li>
         </ul>
     </div>

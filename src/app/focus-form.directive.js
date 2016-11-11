@@ -8,13 +8,15 @@ export const focusForm = function () {
             navTitle: "@"
         },
         template: require('./focus-form.directive.html'),
-        controller($scope) {
+        controller($scope, $log) {
             $scope.children = [];
             this.addItem = function (name, childCtrl) {
                 $scope.children.push({
                     name,
                     controller: childCtrl
                 });
+
+                $log.debug("children", $scope.children);
 
                 // Give the first child focus
                 if ($scope.children.length === 1) {
