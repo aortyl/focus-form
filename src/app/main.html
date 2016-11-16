@@ -5,10 +5,37 @@
 
         <focus-form nav-title="Navigation">
             <focus-form-section name="Section 1">
-                Test 1
+                Focus Form is an angular 1 directive that aims to present a basic vertical form, but provide distinct focus
+                on the current 'section' to help the user complete the inputs. We don't care about the content you stick in
+                the form. Put whatever you want in there, style it however you want. This directive is just about tracking focus
+                as the user moves through the form.
             </focus-form-section>
             <focus-form-section name="Section 2">
-                Test 2
+                <h2>Would you like to learn more?</h2>
+                <div>
+                    <label>First Name:</label>
+                    <input type="text">
+                </div>
+                <div>
+                    <label>Last Name:</label>
+                    <input type="text">
+                </div>
+                <div>
+                    <label>Email:</label>
+                    <input type="text">
+                </div>
+                <div>
+                    <button ng-click="alert()">Submit</button>
+                </div>
+
+                <div>
+                    <span ng-bind="alertMsg"></span>
+                </div>
+            </focus-form-section>
+            <focus-form-section name="Section 3">
+                We do provide some default styling to highlight how the form works. This is something you can keep, or if you choose,
+                you can just overwrite it with your own style. All of the default styles are applied via CSS, so they are
+                easy to overwrite.
             </focus-form-section>
         </focus-form>
     </main>

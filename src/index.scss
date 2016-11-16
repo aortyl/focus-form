@@ -70,3 +70,7 @@ a {
   text-align: center;
   color: white;
 }
+
+.focus-form-section.has-focus > div[ng-transclude] > div {
+  padding: 10px 0;
+}
