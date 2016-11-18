@@ -52,14 +52,14 @@
     }
   }
 
-  .gradient-up {
+  .focus-minus-one {
     background: linear-gradient(to bottom, rgba(0, 0, 0, .15), rgba(0, 0, 0, .02));
   }
-  .gradient-down {
+  .focus-plus-one {
     background: linear-gradient(to bottom, rgba(0, 0, 0, .02), rgba(0, 0, 0, .15));
   }
 
-  .has-focus {
+  .focus {
     color: inherit;
     font-size: 1.5em;
     line-height: 1.25;

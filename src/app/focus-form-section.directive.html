@@ -1,11 +1,9 @@
 <div ng-attr-id="{{name}}"
      class="focus-form-section"
-     ng-class="{'has-focus': focus,
-                'gradient-down': gradientDown,
-                'gradient-up': gradientUp}"
+     ng-class="[focusClass]"
      ng-click="focusMe()">
     <div class="focus-form-section-header">
-        <span ng-bind="name"></span>
+        <span ng-bind="name"></span> |{{focusClass}}
     </div>
     <div ng-transclude></div>
 </div>
