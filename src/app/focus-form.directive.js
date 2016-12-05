@@ -8,7 +8,7 @@ export const focusForm = function () {
             navTitle: "@"
         },
         template: require('./focus-form.directive.html'),
-        controller($scope, $log) {
+        controller($scope, $log, $window) {
             $scope.children = [];
             this.addItem = function (name, childCtrl) {
                 $scope.children.push({
@@ -16,7 +16,13 @@ export const focusForm = function () {
                     controller: childCtrl
                 });
 
-                $log.debug("children", $scope.children);
+                // Set up scroll event capture
+                angular.element($window).bind('DOMMouseScroll', _onWheel); // For FF and Opera
+                angular.element($window).bind('mousewheel', _onWheel); // For others
+
+                function _onWheel() {
+                    $log.debug('wheel', this.pageYOffset);
+                }
 
                 // Give the first child focus
                 if ($scope.children.length === 1) {
@@ -95,7 +101,7 @@ export const focusFormSection = function () {
 
             scope.myIndex = scope.parentCtrl.addItem(scope.name, scope.myCtrl);
         },
-        controller($scope, $log, $timeout, $location, $anchorScroll) {
+        controller($scope, $timeout, $location, $anchorScroll) {
             let timeout = null;
             this.setFocusClass = function (focusClass) {
                 $scope.focusClass = focusClass;
@@ -108,7 +114,6 @@ export const focusFormSection = function () {
                         $anchorScroll();
                     }, 0);
                 }
-                $log.debug('focus class', $scope.focusClass);
             };
 
             $scope.focusMe = function () {
