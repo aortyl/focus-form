@@ -10,19 +10,44 @@ export const focusForm = function () {
         template: require('./focus-form.directive.html'),
         controller($scope, $log, $window) {
             $scope.children = [];
+            $scope.lagCount = 0;
+
+            // Set up scroll event capture
+            angular.element($window).bind('DOMMouseScroll', _onWheel); // For FF and Opera
+            angular.element($window).bind('mousewheel', _onWheel); // For others
+
+            function _onWheel(e) {
+                $log.debug("scroll event", e);
+                if ($scope.scrollLocation === this.pageYOffset) {
+                    $scope.lagCount++;
+                } else {
+                    $scope.lagCount = 0;
+                }
+
+                if (this.pageYOffset > $scope.scrollLocation) {
+                    $scope.scrollDirection = 1;
+                } else if (this.pageYOffset < $scope.scrollLocation) {
+                    $scope.scrollDirection = -1;
+                } else if (e.deltaY < 0) {
+                    $scope.scrollDirection = -1;
+                } else {
+                    $scope.scrollDirection = 1;
+                }
+
+                if ($scope.lagCount >= 3) {
+                    _moveFocus($scope.scrollDirection);
+                    $scope.lagCount = 0;
+                }
+
+                $scope.scrollLocation = this.pageYOffset;
+                $log.debug('wheel', $scope.scrollLocation, $scope.scrollDirection, $scope.lagCount);
+            }
+
             this.addItem = function (name, childCtrl) {
                 $scope.children.push({
                     name,
                     controller: childCtrl
                 });
-
-                // Set up scroll event capture
-                angular.element($window).bind('DOMMouseScroll', _onWheel); // For FF and Opera
-                angular.element($window).bind('mousewheel', _onWheel); // For others
-
-                function _onWheel() {
-                    $log.debug('wheel', this.pageYOffset);
-                }
 
                 // Give the first child focus
                 if ($scope.children.length === 1) {
@@ -39,7 +64,16 @@ export const focusForm = function () {
                 return $scope.children.length - 1;
             };
 
+            function _moveFocus(direction) {
+                $scope.focusOnChild($scope.currentFocusIndex + direction);
+            }
+
             $scope.focusOnChild = this.focusOnChild = function (index) {
+                if (index < 0) {
+                    index = 0;
+                } else if (index >= $scope.children.length) {
+                    index = $scope.children.length - 1;
+                }
                 // Remove focus from previously focused section (if it exists)
                 if (angular.isDefined($scope.currentFocusIndex)) {
                     if ($scope.currentFocusIndex - 2 >= 0) {
