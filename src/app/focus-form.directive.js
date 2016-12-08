@@ -18,12 +18,14 @@ export const focusForm = function () {
 
             function _onWheel(e) {
                 $log.debug("scroll event", e);
+                // Update count that counts of often a scroll even occurs, but the page doesn't move.
                 if ($scope.scrollLocation === this.pageYOffset) {
                     $scope.lagCount++;
                 } else {
                     $scope.lagCount = 0;
                 }
 
+                // Get the direction of the scroll
                 if (this.pageYOffset > $scope.scrollLocation) {
                     $scope.scrollDirection = 1;
                 } else if (this.pageYOffset < $scope.scrollLocation) {
@@ -34,9 +36,17 @@ export const focusForm = function () {
                     $scope.scrollDirection = 1;
                 }
 
+                // If a number of scroll events have occurred, and the screen hasn't moved, lets move focus.
                 if ($scope.lagCount >= 3) {
                     _moveFocus($scope.scrollDirection);
                     $scope.lagCount = 0;
+                }
+
+                // If the screen HAS moved, lets look at the child section's locations to determine if one of them gets focus
+                if ($scope.lagCount === 0) {
+                    angular.forEach($scope.children, (childSection, childName) => {
+                        $log.debug(childName, childSection.controller.getOffsetTop());
+                    });
                 }
 
                 $scope.scrollLocation = this.pageYOffset;
@@ -135,7 +145,7 @@ export const focusFormSection = function () {
 
             scope.myIndex = scope.parentCtrl.addItem(scope.name, scope.myCtrl);
         },
-        controller($scope, $timeout, $location, $anchorScroll) {
+        controller($scope, $element, $timeout, $location, $anchorScroll) {
             let timeout = null;
             this.setFocusClass = function (focusClass) {
                 $scope.focusClass = focusClass;
@@ -148,6 +158,10 @@ export const focusFormSection = function () {
                         $anchorScroll();
                     }, 0);
                 }
+            };
+
+            this.getOffsetTop = function () {
+                return $element[0].offsetTop;
             };
 
             $scope.focusMe = function () {
