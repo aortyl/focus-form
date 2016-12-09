@@ -44,8 +44,12 @@ export const focusForm = function () {
 
                 // If the screen HAS moved, lets look at the child section's locations to determine if one of them gets focus
                 if ($scope.lagCount === 0) {
-                    angular.forEach($scope.children, (childSection, childName) => {
-                        $log.debug(childName, childSection.controller.getOffsetTop());
+                    angular.forEach($scope.children, (childSection, index) => {
+                        $log.debug(index, childSection.controller.getOffsetTop());
+                        const childLocation = childSection.controller.getOffsetTop() - this.pageYOffset;
+                        if (childLocation > 0 && childLocation < 200) {
+                            $scope.focusOnChild(index);
+                        }
                     });
                 }
 
@@ -78,7 +82,8 @@ export const focusForm = function () {
                 $scope.focusOnChild($scope.currentFocusIndex + direction);
             }
 
-            $scope.focusOnChild = this.focusOnChild = function (index) {
+            $scope.focusOnChild = this.focusOnChild = function (index, scroll) {
+                scroll = scroll || false;
                 if (index < 0) {
                     index = 0;
                 } else if (index >= $scope.children.length) {
@@ -87,37 +92,37 @@ export const focusForm = function () {
                 // Remove focus from previously focused section (if it exists)
                 if (angular.isDefined($scope.currentFocusIndex)) {
                     if ($scope.currentFocusIndex - 2 >= 0) {
-                        $scope.children[$scope.currentFocusIndex - 2].controller.setFocusClass('');
+                        $scope.children[$scope.currentFocusIndex - 2].controller.setFocusClass('', scroll);
                     }
                     if ($scope.currentFocusIndex - 1 >= 0) {
-                        $scope.children[$scope.currentFocusIndex - 1].controller.setFocusClass('');
+                        $scope.children[$scope.currentFocusIndex - 1].controller.setFocusClass('', scroll);
                     }
 
-                    $scope.children[$scope.currentFocusIndex].controller.setFocusClass('');
+                    $scope.children[$scope.currentFocusIndex].controller.setFocusClass('', scroll);
 
                     if ($scope.currentFocusIndex + 1 < $scope.children.length) {
-                        $scope.children[$scope.currentFocusIndex + 1].controller.setFocusClass('');
+                        $scope.children[$scope.currentFocusIndex + 1].controller.setFocusClass('', scroll);
                     }
                     if ($scope.currentFocusIndex + 2 < $scope.children.length) {
-                        $scope.children[$scope.currentFocusIndex + 2].controller.setFocusClass('');
+                        $scope.children[$scope.currentFocusIndex + 2].controller.setFocusClass('', scroll);
                     }
                 }
 
                 // Update classes of sections surrounding focused section
                 if (index - 2 >= 0) {
-                    $scope.children[index - 2].controller.setFocusClass('focus-minus-two');
+                    $scope.children[index - 2].controller.setFocusClass('focus-minus-two', scroll);
                 }
                 if (index - 1 >= 0) {
-                    $scope.children[index - 1].controller.setFocusClass('focus-minus-one');
+                    $scope.children[index - 1].controller.setFocusClass('focus-minus-one', scroll);
                 }
 
-                $scope.children[index].controller.setFocusClass('focus');
+                $scope.children[index].controller.setFocusClass('focus', scroll);
 
                 if (index + 1 < $scope.children.length) {
-                    $scope.children[index + 1].controller.setFocusClass('focus-plus-one');
+                    $scope.children[index + 1].controller.setFocusClass('focus-plus-one', scroll);
                 }
                 if (index + 2 < $scope.children.length) {
-                    $scope.children[index + 2].controller.setFocusClass('focus-plus-two');
+                    $scope.children[index + 2].controller.setFocusClass('focus-plus-two', scroll);
                 }
 
                 // Update current focus index
@@ -147,7 +152,7 @@ export const focusFormSection = function () {
         },
         controller($scope, $element, $timeout, $location, $anchorScroll) {
             let timeout = null;
-            this.setFocusClass = function (focusClass) {
+            this.setFocusClass = function (focusClass, isScroll) {
                 $scope.focusClass = focusClass;
                 if ($scope.focusClass === 'focus') {
                     if (timeout) {
@@ -155,7 +160,9 @@ export const focusFormSection = function () {
                     }
                     timeout = $timeout(() => {
                         $location.hash($scope.name);
-                        $anchorScroll();
+                        if (isScroll) {
+                            $anchorScroll();
+                        }
                     }, 0);
                 }
             };
